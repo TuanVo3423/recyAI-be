@@ -3,6 +3,7 @@ import User from '../models/schemas/User.schema'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
 import Follower from '~/models/schemas/Follower.schema'
 import Instruction from '~/models/schemas/Instruction.schema'
+import Tweet from '~/models/schemas/Tweet.schema'
 
 class DatabaseServices {
   private client: MongoClient
@@ -36,6 +37,9 @@ class DatabaseServices {
 
   get instructions(): Collection<Instruction> {
     return this.db.collection(process.env.DB_INSTRUCTIONS_COLLECTION as string)
+  }
+  get tweets(): Collection<Tweet> {
+    return this.db.collection(process.env.DB_TWEETS_COLLECTION as string)
   }
 }
 

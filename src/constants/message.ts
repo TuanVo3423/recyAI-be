@@ -90,3 +90,22 @@ export const INSTRUCTIONS_MESSAGES = {
   INSTRUCTION_ID_IS_NOT_MATCH_WITH_USER_ID_OR_NOT_FOUND_OR_DELETED:
     'Instruction ID is not match with user ID or not found or deleted'
 } as const
+
+export const TWEETS_MESSAGES = {
+  CREATE_TWEET_SUCCESS: 'Create tweet success',
+  TWEET_NOT_FOUND: 'Tweet not found',
+  GET_TWEET_SUCCESS: 'Get tweet success',
+  GET_YOUR_TWEETS_SUCCESS: 'Get your tweets success',
+  GET_TWEETS_SUCCESS: 'Get tweets success',
+  UPDATE_TWEET_SUCCESS: 'Update tweet success',
+  DELETE_TWEET_SUCCESS: 'Delete tweet success',
+  TWEET_ID_IS_REQUIRED: 'Tweet ID is required',
+  TWEET_ID_IS_INVALID: 'Tweet ID is invalid',
+  TWEET_ID_MUST_BE_A_STRING: 'Tweet ID must be a string',
+  TWEET_ID_NOT_FOUND: 'Tweet ID not found',
+  TWEET_ID_IS_NOT_MATCH: 'Tweet ID is not match',
+  TWEET_ID_IS_NOT_MATCH_WITH_USER_ID: 'Tweet ID is not match with user ID',
+  TWEET_ID_IS_NOT_MATCH_WITH_USER_ID_OR_NOT_FOUND: 'Tweet ID is not match with user ID or not found',
+  TWEET_ID_IS_NOT_MATCH_WITH_USER_ID_OR_NOT_FOUND_OR_DELETED:
+    'Tweet ID is not match with user ID or not found or deleted'
+} as const
