@@ -5,12 +5,13 @@ import Instruction from '~/models/schemas/Instruction.schema'
 
 class InstructionsServices {
   async createInstruction({ user_id, payload }: { user_id: string; payload: CreateInstructionBody }) {
-    await databaseServices.instructions.insertOne(
+    const instruction = await databaseServices.instructions.insertOne(
       new Instruction({
         user_id: new ObjectId(user_id),
         ...payload
       })
     )
+    return instruction
   }
   async getInstructions() {
     const instructions = await databaseServices.instructions.find({}).toArray()

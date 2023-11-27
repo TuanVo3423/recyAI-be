@@ -20,6 +20,7 @@ import {
 import User from '~/models/schemas/User.schema'
 import databaseServices from '~/services/database.services'
 import userServices from '~/services/users.services'
+import { createCookie } from '~/utils/cookie'
 
 export const registerController = async (
   req: Request<ParamsDictionary, any, RegisterReqBody>,
@@ -37,8 +38,13 @@ export const loginController = async (
 ) => {
   const { verify, _id: user_id } = req.user as User
   // const user_id = user?._id as ObjectId
-  const result = await userServices.login({ user_id: (user_id as ObjectId).toString(), verify })
-  return res.json({ message: USER_MESSAGES.LOGIN_SUCCESS, result })
+  const result = await userServices.login({
+    user_id: (user_id as ObjectId).toString(),
+    verify
+  })
+  const cookie = createCookie(result.access_token)
+  res.setHeader('Set-Cookie', [cookie])
+  return res.json({ message: USER_MESSAGES.LOGIN_SUCCESS, user: req.user, result })
 }
 
 export const logoutController = async (req: Request<ParamsDictionary, any, LogoutReqBody>, res: Response) => {

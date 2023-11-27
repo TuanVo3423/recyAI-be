@@ -9,10 +9,9 @@ export const createNewController = async (
   res: Response,
   next: NextFunction
 ) => {
-  // const { user_id } = req.decoded_authorization as TokenPayload
-  const user_id = '6562e80946f1940c814f8534'
-  await instructionsServices.createInstruction({ user_id, payload: req.body })
-  return res.json({ message: INSTRUCTIONS_MESSAGES.CREATE_INSTRUCTION_SUCCESS })
+  const { user_id } = req.decoded_authorization as TokenPayload
+  const instruction = await instructionsServices.createInstruction({ user_id, payload: req.body })
+  return res.json({ message: INSTRUCTIONS_MESSAGES.CREATE_INSTRUCTION_SUCCESS, instruction_id: instruction.insertedId })
 }
 
 export const getInstructionsController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {

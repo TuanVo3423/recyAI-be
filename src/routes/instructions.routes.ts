@@ -12,7 +12,7 @@ import { wrapRequestHandler } from '~/utils/handlers'
 const instructionsRouter = Router()
 
 // instructionsRouter.post('/', accessTokenValidator, verifiedUserValidator, wrapRequestHandler(createNewController))
-instructionsRouter.post('/', wrapRequestHandler(createNewController))
+instructionsRouter.post('/', accessTokenValidator, wrapRequestHandler(createNewController))
 
 instructionsRouter.get('/', accessTokenValidator, verifiedUserValidator, wrapRequestHandler(getInstructionsController))
 

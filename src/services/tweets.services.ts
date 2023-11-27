@@ -16,14 +16,29 @@ class TweetsServices {
     await databaseServices.tweets.insertOne(
       new Tweet({
         user_id: new ObjectId(user_id),
-        instruction_id: new ObjectId(instruction_id),
-        ...payload
+        ...payload,
+        instruction_id: new ObjectId(instruction_id)
       })
     )
   }
 
   async getTweets() {
-    const tweets = await databaseServices.tweets.find({}).toArray()
+    const tweets = await databaseServices.tweets
+      .aggregate([
+        {
+          $lookup: {
+            from: 'instructions', // Tên của bảng instructions
+            localField: 'instruction_id',
+            foreignField: '_id',
+            as: 'instruction'
+          }
+        },
+        {
+          $unwind: '$instruction' // Giải nén mảng instruction
+        }
+        // Các giai đoạn tiếp theo của aggregation (nếu có)
+      ])
+      .toArray()
     return tweets
   }
 }
