@@ -75,7 +75,7 @@ class UsersServices {
       user_id: user_id.toString(),
       verify: UserVerifyStatus.Unverified
     })
-    await databaseServices.users.insertOne(
+    const user = await databaseServices.users.insertOne(
       new User({
         ...payload,
         _id: user_id,
@@ -92,7 +92,7 @@ class UsersServices {
       new RefreshToken({ user_id: new ObjectId(user_id), token: refresh_token })
     )
     console.log('email_verify_token: ', email_verify_token)
-    return { access_token, refresh_token }
+    return { access_token, refresh_token, user }
   }
 
   async checkEmailExists(email: string) {
