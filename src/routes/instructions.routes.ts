@@ -17,7 +17,7 @@ instructionsRouter.post('/', accessTokenValidator, wrapRequestHandler(createNewC
 instructionsRouter.get('/', accessTokenValidator, verifiedUserValidator, wrapRequestHandler(getInstructionsController))
 
 instructionsRouter.get(
-  '/me/:user_id',
+  '/me',
   accessTokenValidator,
   verifiedUserValidator,
   wrapRequestHandler(getMyInstructionsController)

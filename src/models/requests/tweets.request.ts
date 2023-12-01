@@ -16,7 +16,7 @@ enum MediaType {
   Video
 }
 export interface CreateTweetReqBody {
-  instruction_id: string
+  instruction_id: string | null
   type: TweetType
   audience: TweetAudience
   content: string

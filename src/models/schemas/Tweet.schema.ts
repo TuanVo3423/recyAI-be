@@ -18,7 +18,7 @@ enum MediaType {
 interface ITweet {
   _id?: ObjectId
   user_id: ObjectId
-  instruction_id: ObjectId
+  instruction_id: ObjectId | null
   type: TweetType
   audience: TweetAudience
   content: string
@@ -35,7 +35,7 @@ interface ITweet {
 export default class Tweet {
   _id?: ObjectId
   user_id: ObjectId
-  instruction_id: ObjectId
+  instruction_id: ObjectId | null
   type: TweetType
   audience: TweetAudience
   content: string

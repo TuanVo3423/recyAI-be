@@ -20,7 +20,7 @@ export const getInstructionsController = async (req: Request<ParamsDictionary, a
 }
 
 export const getMyInstructionsController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
-  const user_id = req.params.user_id
+  const { user_id } = req.decoded_authorization as TokenPayload
   const instructions = await instructionsServices.getInstructionsByUserId(user_id)
   return res.json({ message: INSTRUCTIONS_MESSAGES.GET_YOUR_INSTRUCTIONS_SUCCESS, instructions })
 }
