@@ -95,6 +95,7 @@ export const TWEETS_MESSAGES = {
   CREATE_TWEET_SUCCESS: 'Create tweet success',
   TWEET_NOT_FOUND: 'Tweet not found',
   GET_TWEET_SUCCESS: 'Get tweet success',
+  GET_MY_TWEETS_SUCCESS: 'Get my tweets success',
   GET_YOUR_TWEETS_SUCCESS: 'Get your tweets success',
   GET_TWEETS_SUCCESS: 'Get tweets success',
   UPDATE_TWEET_SUCCESS: 'Update tweet success',
@@ -108,4 +109,23 @@ export const TWEETS_MESSAGES = {
   TWEET_ID_IS_NOT_MATCH_WITH_USER_ID_OR_NOT_FOUND: 'Tweet ID is not match with user ID or not found',
   TWEET_ID_IS_NOT_MATCH_WITH_USER_ID_OR_NOT_FOUND_OR_DELETED:
     'Tweet ID is not match with user ID or not found or deleted'
+} as const
+
+export const LIKES_MESSAGES = {
+  CREATE_LIKE_SUCCESS: 'Create like success',
+  LIKE_ALREADY_EXISTED: 'Like already existed',
+  LIKE_NOT_FOUND: 'Like not found',
+  GET_LIKE_SUCCESS: 'Get like success',
+  GET_YOUR_LIKES_SUCCESS: 'Get your likes success',
+  GET_LIKES_SUCCESS: 'Get likes success',
+  UPDATE_LIKE_SUCCESS: 'Update like success',
+  DELETE_LIKE_SUCCESS: 'Delete like success',
+  LIKE_ID_IS_REQUIRED: 'Like ID is required',
+  LIKE_ID_IS_INVALID: 'Like ID is invalid',
+  LIKE_ID_MUST_BE_A_STRING: 'Like ID must be a string',
+  LIKE_ID_NOT_FOUND: 'Like ID not found',
+  LIKE_ID_IS_NOT_MATCH: 'Like ID is not match',
+  LIKE_ID_IS_NOT_MATCH_WITH_USER_ID: 'Like ID is not match with user ID',
+  LIKE_ID_IS_NOT_MATCH_WITH_USER_ID_OR_NOT_FOUND: 'Like ID is not match with user ID or not found',
+  LIKE_ID_IS_NOT_MATCH_WITH_USER_ID_OR_NOT_FOUND_OR_DELETED: 'Like ID is not match with user ID or not found or deleted'
 } as const

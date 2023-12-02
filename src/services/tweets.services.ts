@@ -22,8 +22,66 @@ class TweetsServices {
       })
     )
   }
+  async getMyTweets(user_id: string) {
+    const tweets = await databaseServices.tweets
+      .aggregate([
+        { $match: { parent_id: null, user_id: new ObjectId(user_id) } },
+        {
+          $lookup: {
+            from: 'instructions',
+            localField: 'instruction_id',
+            foreignField: '_id',
+            as: 'instruction'
+          }
+        },
+        {
+          $lookup: {
+            from: 'tweets',
+            localField: '_id',
+            foreignField: 'parent_id',
+            as: 'comments'
+          }
+        },
+        {
+          $addFields: {
+            comment_count: { $size: '$comments' }
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'user_id',
+            foreignField: '_id',
+            as: 'user_info'
+          }
+        },
+        {
+          $lookup: {
+            from: 'likes',
+            localField: '_id',
+            foreignField: 'tweet_id',
+            as: 'likes'
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'likes.user_id',
+            foreignField: '_id',
+            as: 'likes'
+          }
+        },
+        {
+          $addFields: {
+            like_count: { $size: '$likes' }
+          }
+        }
+      ])
+      .toArray()
+    return tweets
+  }
 
-  async getTweets() {
+  async getTweets(user_id: string) {
     const tweets = await databaseServices.tweets
       .aggregate([
         { $match: { parent_id: null } },
@@ -46,6 +104,46 @@ class TweetsServices {
         {
           $addFields: {
             comment_count: { $size: '$comments' }
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'user_id',
+            foreignField: '_id',
+            as: 'user_info'
+          }
+        },
+        {
+          $lookup: {
+            from: 'likes',
+            localField: '_id',
+            foreignField: 'tweet_id',
+            as: 'likes'
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'likes.user_id',
+            foreignField: '_id',
+            as: 'likes'
+          }
+        },
+        {
+          $match: {
+            likes: {
+              $not: {
+                $elemMatch: {
+                  _id: new ObjectId(user_id)
+                }
+              }
+            }
+          }
+        },
+        {
+          $addFields: {
+            like_count: { $size: '$likes' }
           }
         }
       ])
@@ -82,6 +180,35 @@ class TweetsServices {
             localField: 'user_id',
             foreignField: '_id',
             as: 'user_info'
+          }
+        },
+        {
+          $lookup: {
+            from: 'likes',
+            localField: '_id',
+            foreignField: 'tweet_id',
+            as: 'likes'
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'likes.user_id',
+            foreignField: '_id',
+            as: 'likes'
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'comments.user_id',
+            foreignField: '_id',
+            as: 'comments_users'
+          }
+        },
+        {
+          $addFields: {
+            like_count: { $size: '$likes' }
           }
         },
         {
