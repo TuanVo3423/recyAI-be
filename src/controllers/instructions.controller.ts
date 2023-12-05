@@ -34,6 +34,12 @@ export const getInstructionController = async (req: Request<any, any, any>, res:
   return res.json({ message: INSTRUCTIONS_MESSAGES.GET_INSTRUCTION_SUCCESS, instruction })
 }
 
+export const updateInstructionController = async (req: Request<any, any, any>, res: Response) => {
+  const _id = req.params.instruction_id
+  const instruction = await instructionsServices.updateInstruction(_id, req.body)
+  return res.json({ message: INSTRUCTIONS_MESSAGES.UPDATE_INSTRUCTION_SUCCESS, instruction })
+}
+
 export const deleteInstructionController = async (req: Request<any, any, any>, res: Response) => {
   const _id = req.params.instruction_id
   const instruction = await instructionsServices.deleteInstruction(_id)

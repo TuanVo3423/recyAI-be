@@ -3,8 +3,10 @@ import {
   createNewController,
   getMyTweetsController,
   getTweetController,
-  getTweetsController
+  getTweetsController,
+  updateTweetController
 } from '~/controllers/tweets.controller'
+import { tweetExistValidator } from '~/middlewares/tweets.middlewares'
 import { accessTokenValidator } from '~/middlewares/users.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
@@ -16,5 +18,6 @@ tweetsRouter.post('/', accessTokenValidator, wrapRequestHandler(createNewControl
 tweetsRouter.get('/me', accessTokenValidator, wrapRequestHandler(getMyTweetsController))
 tweetsRouter.get('/:tweetId', accessTokenValidator, wrapRequestHandler(getTweetController))
 tweetsRouter.get('/', accessTokenValidator, wrapRequestHandler(getTweetsController))
+tweetsRouter.patch('/:tweetId', accessTokenValidator, tweetExistValidator, wrapRequestHandler(updateTweetController))
 
 export default tweetsRouter

@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb'
+import Tweet from '../schemas/Tweet.schema'
 
 enum TweetType {
   Tweet,
@@ -27,3 +28,5 @@ export interface CreateTweetReqBody {
   guest_views: number
   user_views: number
 }
+
+export interface UpdateTweetReqBody extends Partial<Tweet> {}

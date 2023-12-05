@@ -4,6 +4,8 @@ export interface CreateInstructionBody {
   steps: Array<string>
 }
 
+
+
 export interface FindInstructionParams extends core.ParamsDictionary {
   instruction_id: string
 }

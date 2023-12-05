@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
+import { ObjectId } from 'mongodb'
 import { TWEETS_MESSAGES } from '~/constants/message'
-import { CreateTweetReqBody } from '~/models/requests/tweets.request'
+import { CreateTweetReqBody, UpdateTweetReqBody } from '~/models/requests/tweets.request'
 import { TokenPayload } from '~/models/requests/users.requests'
 import tweetsServices from '~/services/tweets.services'
 export const createNewController = async (
@@ -44,4 +45,14 @@ export const getMyTweetsController = async (
   const { user_id } = req.decoded_authorization as TokenPayload
   const tweets = await tweetsServices.getMyTweets(user_id)
   return res.json({ tweets, message: TWEETS_MESSAGES.GET_MY_TWEETS_SUCCESS })
+}
+
+export const updateTweetController = async (
+  req: Request<ParamsDictionary, any, UpdateTweetReqBody>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { tweetId } = req.params
+  const tweet = await tweetsServices.updateTweet(new ObjectId(tweetId), req.body)
+  return res.json({ tweet, message: TWEETS_MESSAGES.UPDATE_TWEET_SUCCESS })
 }

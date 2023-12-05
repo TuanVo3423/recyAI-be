@@ -4,7 +4,8 @@ import {
   deleteInstructionController,
   getInstructionController,
   getInstructionsController,
-  getMyInstructionsController
+  getMyInstructionsController,
+  updateInstructionController
 } from '~/controllers/instructions.controller'
 import { accessTokenValidator, verifiedUserValidator } from '~/middlewares/users.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
@@ -28,6 +29,13 @@ instructionsRouter.get(
   accessTokenValidator,
   verifiedUserValidator,
   wrapRequestHandler(getInstructionController)
+)
+
+instructionsRouter.patch(
+  '/:instruction_id',
+  accessTokenValidator,
+  verifiedUserValidator,
+  wrapRequestHandler(updateInstructionController)
 )
 
 instructionsRouter.delete(

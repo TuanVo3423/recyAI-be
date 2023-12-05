@@ -28,6 +28,18 @@ class InstructionsServices {
     return instruction
   }
 
+  async updateInstruction(_id: string, payload: any) {
+    const instruction = await databaseServices.instructions.updateOne(
+      { _id: new ObjectId(_id) },
+      {
+        $set: {
+          steps: payload
+        }
+      }
+    )
+    return instruction
+  }
+
   async deleteInstruction(_id: string) {
     const instruction = await databaseServices.instructions.deleteOne({ _id: new ObjectId(_id) })
     return instruction

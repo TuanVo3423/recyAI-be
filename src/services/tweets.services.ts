@@ -1,4 +1,4 @@
-import { CreateTweetReqBody } from '~/models/requests/tweets.request'
+import { CreateTweetReqBody, UpdateTweetReqBody } from '~/models/requests/tweets.request'
 import databaseServices from './database.services'
 import Tweet from '~/models/schemas/Tweet.schema'
 import { ObjectId } from 'mongodb'
@@ -220,6 +220,11 @@ class TweetsServices {
       .toArray()
 
     return tweet
+  }
+
+  async updateTweet(tweetId: ObjectId, payload: UpdateTweetReqBody) {
+    const result = await databaseServices.tweets.updateOne({ _id: tweetId }, { $set: { ...payload } })
+    return result
   }
 }
 const tweetsServices = new TweetsServices()
