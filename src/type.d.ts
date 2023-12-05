@@ -11,5 +11,6 @@ declare module 'express' {
     decoded_email_verify_token?: TokenPayload
     decoded_forgot_password_verify_token?: TokenPayload
     tweet?: Tweet
+    uploadedImages?: any
   }
 }

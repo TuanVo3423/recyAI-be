@@ -12,9 +12,20 @@ export const createNewController = async (
 ) => {
   const { user_id } = req.decoded_authorization as TokenPayload
   const { instruction_id } = req.body
+  console.log('req.uploadedImages: ', req.uploadedImages)
 
-  await tweetsServices.createTweet({ user_id, instruction_id, payload: req.body })
-  return res.json({ message: TWEETS_MESSAGES.CREATE_TWEET_SUCCESS })
+  let ImagesDeployed = []
+  if (req.uploadedImages.length > 0) {
+    ImagesDeployed = req.uploadedImages.map((image: any) => {
+      return {
+        url: image.url,
+        type: 1
+      }
+    })
+  }
+  const result = await tweetsServices.createTweet({ user_id, instruction_id, payload: req.body, ImagesDeployed })
+
+  return res.json({ message: TWEETS_MESSAGES.CREATE_TWEET_SUCCESS, result })
 }
 
 export const getTweetController = async (

@@ -11,6 +11,10 @@ enum TweetAudience {
   Everyone, // 0
   TwitterCircle // 1
 }
+interface Media {
+  url: string
+  type: MediaType // video, image
+}
 
 enum MediaType {
   Image,
@@ -24,7 +28,7 @@ export interface CreateTweetReqBody {
   parent_id: null | ObjectId //  chỉ null khi tweet gốc
   hashtags: string[]
   mentions: string[]
-  medias: MediaType[]
+  medias: Media[]
   guest_views: number
   user_views: number
 }

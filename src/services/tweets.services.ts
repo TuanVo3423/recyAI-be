@@ -7,20 +7,25 @@ class TweetsServices {
   async createTweet({
     user_id,
     instruction_id,
-    payload
+    payload,
+    ImagesDeployed
   }: {
     user_id: string
     instruction_id: string | null
     payload: CreateTweetReqBody
+    ImagesDeployed?: any
   }) {
-    await databaseServices.tweets.insertOne(
+    console.log('ImagesDeployed: ', ImagesDeployed)
+    const result = await databaseServices.tweets.insertOne(
       new Tweet({
         user_id: new ObjectId(user_id),
         ...payload,
         instruction_id: instruction_id ? new ObjectId(instruction_id) : null,
-        parent_id: payload.parent_id ? new ObjectId(payload.parent_id) : payload.parent_id
+        parent_id: payload.parent_id ? new ObjectId(payload.parent_id) : payload.parent_id,
+        medias: ImagesDeployed
       })
     )
+    return result
   }
   async getMyTweets(user_id: string) {
     const tweets = await databaseServices.tweets

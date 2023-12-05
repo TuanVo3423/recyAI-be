@@ -6,6 +6,10 @@ enum TweetType {
   Comment,
   QuoteTweet
 }
+interface Media {
+  url: string
+  type: MediaType // video, image
+}
 enum TweetAudience {
   Everyone, // 0
   TwitterCircle // 1
@@ -25,7 +29,7 @@ interface ITweet {
   parent_id: null | ObjectId //  chỉ null khi tweet gốc
   hashtags: string[]
   mentions: string[]
-  medias: MediaType[]
+  medias: Media[]
   guest_views: number
   user_views: number
   created_at?: Date
@@ -42,7 +46,7 @@ export default class Tweet {
   parent_id: null | ObjectId //  chỉ null khi tweet gốc
   hashtags: string[]
   mentions: string[]
-  medias: MediaType[]
+  medias: Media[]
   guest_views: number
   user_views: number
   created_at?: Date
