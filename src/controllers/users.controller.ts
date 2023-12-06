@@ -133,6 +133,15 @@ export const getMeController = async (req: Request, res: Response) => {
 }
 
 export const updateMeController = async (req: Request<ParamsDictionary, any, UpdateMeReqBody>, res: Response) => {
+  // let ImagesDeployed = []
+  // if (req.uploadedImages.length > 0) {
+  //   ImagesDeployed = req.uploadedImages.map((image: any) => {
+  //     return {
+  //       url: image.url,
+  //       type: 1
+  //     }
+  //   })
+  // }
   const { user_id } = req.decoded_authorization as TokenPayload
   const is_exists_username = await userServices.checkIsUniqueUsername(req.body.username as string)
   const is_true_format = TWITTER_USERNAME_REGEX.test(req.body.username as string)
@@ -146,10 +155,17 @@ export const updateMeController = async (req: Request<ParamsDictionary, any, Upd
       message: USER_MESSAGES.INVALID_USERNAME_FORMAT
     })
   }
-  const result = await userServices.updateMe(user_id, req.body)
+  if (req.uploadedImages.length > 0) {
+    await userServices.updateMe(user_id, {
+      ...req.body,
+      avatar: req.uploadedImages[0].url
+    })
+  } else {
+    await userServices.updateMe(user_id, req.body)
+  }
+
   return res.json({
-    message: USER_MESSAGES.UPDATE_PROFILE_SUCCESS,
-    result
+    message: USER_MESSAGES.UPDATE_PROFILE_SUCCESS
   })
 }
 

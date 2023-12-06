@@ -524,18 +524,18 @@ export const updateMeValidator = validate(
         optional: true,
         notEmpty: {
           errorMessage: USER_MESSAGES.AVATAR_IS_REQUIRED
-        },
-        isString: {
-          errorMessage: USER_MESSAGES.AVATAR_MUST_BE_A_STRING
-        },
-        trim: true,
-        isLength: {
-          options: {
-            min: 1,
-            max: 50
-          },
-          errorMessage: USER_MESSAGES.AVATAR_LENGTH_MUST_BE_FROM_1_TO_50
         }
+        // isString: {
+        //   errorMessage: USER_MESSAGES.AVATAR_MUST_BE_A_STRING
+        // },
+        // trim: true,
+        // isLength: {
+        //   options: {
+        //     min: 1,
+        //     max: 50
+        //   },
+        //   errorMessage: USER_MESSAGES.AVATAR_LENGTH_MUST_BE_FROM_1_TO_50
+        // }
       },
       cover_photo: {
         optional: true,

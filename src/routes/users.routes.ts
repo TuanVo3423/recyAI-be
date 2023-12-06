@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import { uploadController } from '~/controllers/upload.controller'
 import {
   changePasswordController,
   followController,
@@ -54,6 +55,7 @@ usersRouter.patch(
   '/me',
   accessTokenValidator,
   verifiedUserValidator,
+  wrapRequestHandler(uploadController),
   updateMeValidator,
   FilterValidator<UpdateMeReqBody>([
     'name',
