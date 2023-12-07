@@ -102,8 +102,8 @@ class UsersServices {
 
   async searchByName(name: string) {
     const regexPattern = new RegExp(name, 'i')
-    const users = await databaseServices.users.find({ name: { $regex: regexPattern } })
-    return users.toArray()
+    const users = await databaseServices.users.find({ name: { $regex: regexPattern } }).toArray()
+    return users
   }
 
   async login({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {

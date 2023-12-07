@@ -5,6 +5,7 @@ import {
   followController,
   forgotPasswordController,
   getMeController,
+  getUserController,
   loginController,
   logoutController,
   registerController,
@@ -54,6 +55,7 @@ usersRouter.post('/reset-password', resetPasswordValidator, wrapRequestHandler(r
 usersRouter.get('/me', accessTokenValidator, wrapRequestHandler(getMeController))
 
 usersRouter.get('/search', accessTokenValidator, wrapRequestHandler(searchUsersController))
+usersRouter.get('/:userId', accessTokenValidator, wrapRequestHandler(getUserController))
 usersRouter.patch(
   '/me',
   accessTokenValidator,

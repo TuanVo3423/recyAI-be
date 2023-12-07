@@ -4,6 +4,7 @@ import {
   getMyTweetsController,
   getTweetController,
   getTweetsController,
+  getUserTweetsController,
   updateTweetController
 } from '~/controllers/tweets.controller'
 import { uploadController } from '~/controllers/upload.controller'
@@ -23,6 +24,7 @@ tweetsRouter.post(
   wrapRequestHandler(createNewController)
 )
 tweetsRouter.get('/me', accessTokenValidator, wrapRequestHandler(getMyTweetsController))
+tweetsRouter.get('/user/:userId', accessTokenValidator, wrapRequestHandler(getUserTweetsController))
 tweetsRouter.get('/:tweetId', accessTokenValidator, wrapRequestHandler(getTweetController))
 tweetsRouter.get('/', accessTokenValidator, wrapRequestHandler(getTweetsController))
 tweetsRouter.patch('/:tweetId', accessTokenValidator, tweetExistValidator, wrapRequestHandler(updateTweetController))

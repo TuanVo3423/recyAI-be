@@ -29,7 +29,6 @@ export const uploadController = async (
         const uploadRes = await cloudinary.uploader.upload(base64, imageConfig)
         uploadedImages.push(uploadRes)
       }
-      console.log('uploadedImages in uplaod controller: ', uploadedImages)
       req.uploadedImages = uploadedImages
       return next()
     } else {

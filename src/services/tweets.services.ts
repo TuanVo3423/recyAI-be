@@ -15,7 +15,6 @@ class TweetsServices {
     payload: CreateTweetReqBody
     ImagesDeployed?: any
   }) {
-    console.log('ImagesDeployed: ', ImagesDeployed)
     const result = await databaseServices.tweets.insertOne(
       new Tweet({
         user_id: new ObjectId(user_id),
@@ -230,6 +229,65 @@ class TweetsServices {
   async updateTweet(tweetId: ObjectId, payload: UpdateTweetReqBody) {
     const result = await databaseServices.tweets.updateOne({ _id: tweetId }, { $set: { ...payload } })
     return result
+  }
+
+  async getUserTweets(userId: string) {
+    const tweets = await databaseServices.tweets
+      .aggregate([
+        { $match: { parent_id: null, user_id: new ObjectId(userId) } },
+        {
+          $lookup: {
+            from: 'instructions',
+            localField: 'instruction_id',
+            foreignField: '_id',
+            as: 'instruction'
+          }
+        },
+        {
+          $lookup: {
+            from: 'tweets',
+            localField: '_id',
+            foreignField: 'parent_id',
+            as: 'comments'
+          }
+        },
+        {
+          $addFields: {
+            comment_count: { $size: '$comments' }
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'user_id',
+            foreignField: '_id',
+            as: 'user_info'
+          }
+        },
+        {
+          $lookup: {
+            from: 'likes',
+            localField: '_id',
+            foreignField: 'tweet_id',
+            as: 'likes'
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'likes.user_id',
+            foreignField: '_id',
+            as: 'likes'
+          }
+        },
+        {
+          $addFields: {
+            like_count: { $size: '$likes' }
+          }
+        }
+      ])
+      .toArray()
+    return tweets
   }
 }
 const tweetsServices = new TweetsServices()

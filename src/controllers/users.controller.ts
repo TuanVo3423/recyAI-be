@@ -133,6 +133,15 @@ export const getMeController = async (req: Request, res: Response) => {
   })
 }
 
+export const getUserController = async (req: Request, res: Response) => {
+  const { userId } = req.params
+  const user = await userServices.getMe(userId)
+  return res.json({
+    result: user,
+    message: USER_MESSAGES.GET_PROFILE_SUCCESS
+  })
+}
+
 export const searchUsersController = async (req: Request<ParamsDictionary, any, SearchReqBody>, res: Response) => {
   const { name } = req.query
   const users = await userServices.searchByName(name as string)

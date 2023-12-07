@@ -12,7 +12,6 @@ export const createNewController = async (
 ) => {
   const { user_id } = req.decoded_authorization as TokenPayload
   const { instruction_id } = req.body
-  console.log('req.uploadedImages: ', req.uploadedImages)
 
   let ImagesDeployed = []
   if (req.uploadedImages.length > 0) {
@@ -55,6 +54,16 @@ export const getMyTweetsController = async (
 ) => {
   const { user_id } = req.decoded_authorization as TokenPayload
   const tweets = await tweetsServices.getMyTweets(user_id)
+  return res.json({ tweets, message: TWEETS_MESSAGES.GET_MY_TWEETS_SUCCESS })
+}
+
+export const getUserTweetsController = async (
+  req: Request<ParamsDictionary, any, any>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { userId } = req.params
+  const tweets = await tweetsServices.getUserTweets(userId)
   return res.json({ tweets, message: TWEETS_MESSAGES.GET_MY_TWEETS_SUCCESS })
 }
 
