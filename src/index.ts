@@ -10,6 +10,7 @@ import instructionsRouter from './routes/instructions.routes'
 import tweetsRouter from './routes/tweets.routes'
 import likesRouter from './routes/likes.routes'
 import bodyParser from 'body-parser'
+import messagesRouter from './routes/messages.routes'
 
 databaseServices.connect()
 const app = express()
@@ -27,6 +28,7 @@ app.use('/users', usersRouter)
 app.use('/instructions', instructionsRouter)
 app.use('/tweets', tweetsRouter)
 app.use('/likes', likesRouter)
+app.use('/messages', messagesRouter)
 app.use(defaultErrorHandler)
 
 app.listen(port, () => {

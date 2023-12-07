@@ -5,6 +5,7 @@ import Follower from '~/models/schemas/Follower.schema'
 import Instruction from '~/models/schemas/Instruction.schema'
 import Tweet from '~/models/schemas/Tweet.schema'
 import Like from '~/models/schemas/Likes.schema'
+import Message from '~/models/schemas/Message.schema'
 
 class DatabaseServices {
   private client: MongoClient
@@ -44,6 +45,9 @@ class DatabaseServices {
   }
   get likes(): Collection<Like> {
     return this.db.collection(process.env.DB_LIKES_COLLECTION as string)
+  }
+  get messages(): Collection<Message> {
+    return this.db.collection(process.env.DB_MESSAGES_COLLECTION as string)
   }
 }
 

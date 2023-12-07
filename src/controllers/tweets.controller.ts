@@ -43,8 +43,11 @@ export const getTweetsController = async (
   next: NextFunction
 ) => {
   const { user_id } = req.decoded_authorization as TokenPayload
-  const tweets = await tweetsServices.getTweets(user_id)
-  return res.json({ tweets, message: TWEETS_MESSAGES.GET_TWEETS_SUCCESS })
+  const { limit, page } = req.query
+  const _limit = parseInt(limit as string) || 1
+  const _page = parseInt(page as string) || 1
+  const tweets = await tweetsServices.getTweets({ user_id, limit: _limit, page: _page })
+  return res.json({ tweets, message: TWEETS_MESSAGES.GET_TWEETS_SUCCESS, count: tweets.length })
 }
 
 export const getMyTweetsController = async (

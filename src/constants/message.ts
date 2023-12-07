@@ -130,3 +130,17 @@ export const LIKES_MESSAGES = {
   LIKE_ID_IS_NOT_MATCH_WITH_USER_ID_OR_NOT_FOUND: 'Like ID is not match with user ID or not found',
   LIKE_ID_IS_NOT_MATCH_WITH_USER_ID_OR_NOT_FOUND_OR_DELETED: 'Like ID is not match with user ID or not found or deleted'
 } as const
+
+export const MESSAGES_MESSAGES = {
+  CREATE_MESSAGE_SUCCESS: 'Create message success',
+  MESSAGE_NOT_FOUND: 'Message not found',
+  GET_MESSAGE_SUCCESS: 'Get message success',
+  GET_YOUR_MESSAGES_SUCCESS: 'Get your messages success',
+  GET_MESSAGES_SUCCESS: 'Get messages success',
+  UPDATE_MESSAGE_SUCCESS: 'Update message success',
+  DELETE_MESSAGE_SUCCESS: 'Delete message success',
+  MESSAGE_ID_IS_REQUIRED: 'Message ID is required',
+  MESSAGE_ID_IS_INVALID: 'Message ID is invalid',
+  MESSAGE_ID_MUST_BE_A_STRING: 'Message ID must be a string',
+  MESSAGE_ID_NOT_FOUND: 'Message ID not found'
+} as const

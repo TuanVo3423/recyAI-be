@@ -85,7 +85,9 @@ class TweetsServices {
     return tweets
   }
 
-  async getTweets(user_id: string) {
+  async getTweets({ user_id, limit, page }: { user_id: string; limit: number; page: number }) {
+    const skip = limit * page - limit
+    console.log(skip, limit, page)
     const tweets = await databaseServices.tweets
       .aggregate([
         { $match: { parent_id: null } },
@@ -149,7 +151,9 @@ class TweetsServices {
           $addFields: {
             like_count: { $size: '$likes' }
           }
-        }
+        },
+        { $skip: skip },
+        { $limit: limit }
       ])
       .toArray()
     return tweets
