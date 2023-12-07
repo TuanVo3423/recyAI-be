@@ -69,7 +69,8 @@ export const USER_MESSAGES = {
   USERNAME_ALREADY_EXISTS: 'Username already exists',
   INVALID_USERNAME_FORMAT: 'Invalid username format',
   OLD_PASSWORD_DOES_NOT_MATCH: 'Old password does not match',
-  CHANGE_PASSWORD_SUCCESS: 'Change password successfully'
+  CHANGE_PASSWORD_SUCCESS: 'Change password successfully',
+  SEARCH_SUCCESS: 'Search success'
 } as const
 
 export const INSTRUCTIONS_MESSAGES = {

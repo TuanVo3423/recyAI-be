@@ -100,6 +100,12 @@ class UsersServices {
     return user
   }
 
+  async searchByName(name: string) {
+    const regexPattern = new RegExp(name, 'i')
+    const users = await databaseServices.users.find({ name: { $regex: regexPattern } })
+    return users.toArray()
+  }
+
   async login({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
     const [access_token, refresh_token] = await this.signAccessTokenAndRefreshToken({ user_id, verify })
     await databaseServices.refreshToken.insertOne(

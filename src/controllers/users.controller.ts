@@ -13,6 +13,7 @@ import {
   LogoutReqBody,
   RegisterReqBody,
   ResetPasswordReqBody,
+  SearchReqBody,
   TokenPayload,
   UpdateMeReqBody,
   VerifyEmailReqBody
@@ -129,6 +130,15 @@ export const getMeController = async (req: Request, res: Response) => {
   return res.json({
     result: user,
     message: USER_MESSAGES.GET_PROFILE_SUCCESS
+  })
+}
+
+export const searchUsersController = async (req: Request<ParamsDictionary, any, SearchReqBody>, res: Response) => {
+  const { name } = req.query
+  const users = await userServices.searchByName(name as string)
+  return res.json({
+    users,
+    message: USER_MESSAGES.SEARCH_SUCCESS
   })
 }
 

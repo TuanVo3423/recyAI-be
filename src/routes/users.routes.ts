@@ -10,6 +10,7 @@ import {
   registerController,
   resendVerifyEmailController,
   resetPasswordController,
+  searchUsersController,
   unfolowController,
   updateMeController,
   verifyEmailController,
@@ -51,6 +52,8 @@ usersRouter.post(
 usersRouter.post('/reset-password', resetPasswordValidator, wrapRequestHandler(resetPasswordController))
 
 usersRouter.get('/me', accessTokenValidator, wrapRequestHandler(getMeController))
+
+usersRouter.get('/search', accessTokenValidator, wrapRequestHandler(searchUsersController))
 usersRouter.patch(
   '/me',
   accessTokenValidator,

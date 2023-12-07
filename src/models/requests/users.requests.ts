@@ -47,6 +47,10 @@ export interface ForgotPasswordReqBody {
   email: string
 }
 
+export interface SearchReqBody {
+  name: string
+}
+
 export interface ResetPasswordReqBody {
   password: string
   confirm_password: string
