@@ -12,7 +12,7 @@ export const createMessageController = async (
   next: NextFunction
 ) => {
   const { user_id } = req.decoded_authorization as TokenPayload
-  const result = messagesServices.createMessage({ user_id, payload: req.body })
+  const result = await messagesServices.createMessage({ user_id, payload: req.body })
   return res.json({ message: MESSAGES_MESSAGES.CREATE_MESSAGE_SUCCESS, result })
 }
 
@@ -22,7 +22,7 @@ export const getMessagesController = async (
   next: NextFunction
 ) => {
   const { user_id } = req.decoded_authorization as TokenPayload
-  const { user_recieved_id } = req.body
-  const result = await messagesServices.getMessages({ user_id, user_recieved_id })
+  const { user_recieved_id } = req.query
+  const result = await messagesServices.getMessages({ user_id, user_recieved_id: user_recieved_id as string })
   return res.json({ message: MESSAGES_MESSAGES.GET_MESSAGES_SUCCESS, result })
 }

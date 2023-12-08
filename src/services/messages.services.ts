@@ -5,14 +5,16 @@ import { ObjectId } from 'mongodb'
 
 class MessagesServices {
   async createMessage({ user_id, payload }: { user_id: string; payload: CreateMessageBody }) {
-    const result = databaseServices.messages.insertOne(
+    const result = await databaseServices.messages.insertOne(
       new Message({
         user_id: new ObjectId(user_id),
         user_recieved_id: new ObjectId(payload.user_recieved_id),
         content: payload.content
       })
     )
-    return result
+
+    const message = await databaseServices.messages.findOne({ _id: new ObjectId(result.insertedId) })
+    return message
   }
   async getSendMessages({ user_id, user_recieved_id }: { user_id: string; user_recieved_id: string }) {
     const sendMessages = await databaseServices.messages

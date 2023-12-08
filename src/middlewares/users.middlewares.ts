@@ -568,10 +568,10 @@ export const followValidator = validate(
   )
 )
 
-export const unfolowController = validate(
+export const unfolowValidator = validate(
   checkSchema(
     {
-      user_id: userIdSchema
+      followed_user_id: userIdSchema
     },
     ['params']
   )

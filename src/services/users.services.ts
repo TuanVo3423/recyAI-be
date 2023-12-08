@@ -188,16 +188,52 @@ class UsersServices {
   }
 
   async getMe(user_id: string) {
-    const user = await databaseServices.users.findOne(
-      { _id: new ObjectId(user_id) },
-      {
-        projection: {
-          password: 0,
-          email_verify_token: 0,
-          forgot_password_token: 0
+    const user = await databaseServices.users
+      .aggregate([
+        {
+          $match: { _id: new ObjectId(user_id) }
+        },
+        {
+          $lookup: {
+            from: 'followers',
+            localField: '_id',
+            foreignField: 'followed_user_id',
+            as: 'followerIds'
+          }
+        },
+        {
+          $lookup: {
+            from: 'followers',
+            localField: '_id',
+            foreignField: 'user_id',
+            as: 'followIds'
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'followerIds.user_id',
+            foreignField: '_id',
+            as: 'followerInfo'
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'followIds.followed_user_id',
+            foreignField: '_id',
+            as: 'followInfo'
+          }
+        },
+        {
+          $project: {
+            password: 0,
+            email_verify_token: 0,
+            forgot_password_token: 0
+          }
         }
-      }
-    )
+      ])
+      .toArray()
     return user
   }
 

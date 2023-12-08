@@ -203,7 +203,7 @@ export const followController = async (req: Request<ParamsDictionary, any, Follo
 
 export const unfolowController = async (req: Request<any>, res: Response, next: NextFunction) => {
   const { user_id } = req.decoded_authorization as TokenPayload
-  const { user_id: followed_user_id } = req.params
+  const { followed_user_id } = req.params
   const result = await userServices.unFollow(user_id, followed_user_id)
   return res.json(result)
 }
