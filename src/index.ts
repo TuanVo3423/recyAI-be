@@ -3,6 +3,7 @@ import { config } from 'dotenv'
 import cors from 'cors'
 import { v2 as cloudinary } from 'cloudinary'
 config()
+import { Server } from 'socket.io'
 import { defaultErrorHandler } from './middlewares/error.middlewares'
 import usersRouter from './routes/users.routes'
 import databaseServices from './services/database.services'
@@ -11,6 +12,7 @@ import tweetsRouter from './routes/tweets.routes'
 import likesRouter from './routes/likes.routes'
 import bodyParser from 'body-parser'
 import messagesRouter from './routes/messages.routes'
+import { handleSocket } from './services/socket.services'
 
 databaseServices.connect()
 const app = express()
@@ -31,6 +33,14 @@ app.use('/likes', likesRouter)
 app.use('/messages', messagesRouter)
 app.use(defaultErrorHandler)
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+const io = new Server(server, {
+  cors: {
+    origin: '*'
+  }
+})
+
+io.on('connection', handleSocket)
