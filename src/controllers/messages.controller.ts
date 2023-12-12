@@ -22,7 +22,14 @@ export const getMessagesController = async (
   next: NextFunction
 ) => {
   const { user_id } = req.decoded_authorization as TokenPayload
-  const { user_recieved_id } = req.query
-  const result = await messagesServices.getMessages({ user_id, user_recieved_id: user_recieved_id as string })
-  return res.json({ message: MESSAGES_MESSAGES.GET_MESSAGES_SUCCESS, result })
+  const { limit, page, user_recieved_id } = req.query
+  const _limit = parseInt(limit as string) || 10
+  const _page = parseInt(page as string) || 1
+  const result = await messagesServices.getMessages({
+    user_id,
+    user_recieved_id: user_recieved_id as string,
+    limit: _limit,
+    page: _page
+  })
+  return res.json({ message: MESSAGES_MESSAGES.GET_MESSAGES_SUCCESS, result, count: result.length })
 }

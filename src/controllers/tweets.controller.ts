@@ -44,7 +44,7 @@ export const getTweetsController = async (
 ) => {
   const { user_id } = req.decoded_authorization as TokenPayload
   const { limit, page } = req.query
-  const _limit = parseInt(limit as string) || 1
+  const _limit = parseInt(limit as string) || 2
   const _page = parseInt(page as string) || 1
   const tweets = await tweetsServices.getTweets({ user_id, limit: _limit, page: _page })
   return res.json({ tweets, message: TWEETS_MESSAGES.GET_TWEETS_SUCCESS, count: tweets.length })
@@ -56,7 +56,10 @@ export const getMyTweetsController = async (
   next: NextFunction
 ) => {
   const { user_id } = req.decoded_authorization as TokenPayload
-  const tweets = await tweetsServices.getMyTweets(user_id)
+  const { limit, page } = req.query
+  const _limit = parseInt(limit as string) || 2
+  const _page = parseInt(page as string) || 1
+  const tweets = await tweetsServices.getMyTweets({ user_id, limit: _limit, page: _page })
   return res.json({ tweets, message: TWEETS_MESSAGES.GET_MY_TWEETS_SUCCESS })
 }
 
@@ -66,7 +69,10 @@ export const getUserTweetsController = async (
   next: NextFunction
 ) => {
   const { userId } = req.params
-  const tweets = await tweetsServices.getUserTweets(userId)
+  const { limit, page } = req.query
+  const _limit = parseInt(limit as string) || 2
+  const _page = parseInt(page as string) || 1
+  const tweets = await tweetsServices.getUserTweets({ user_id: userId, limit: _limit, page: _page })
   return res.json({ tweets, message: TWEETS_MESSAGES.GET_MY_TWEETS_SUCCESS })
 }
 

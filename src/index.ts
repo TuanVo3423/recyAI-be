@@ -3,6 +3,7 @@ import { v2 as cloudinary } from 'cloudinary'
 import cors from 'cors'
 import { config } from 'dotenv'
 import express from 'express'
+config()
 import { Server, Socket } from 'socket.io'
 import { defaultErrorHandler } from './middlewares/error.middlewares'
 import instructionsRouter from './routes/instructions.routes'
@@ -11,11 +12,10 @@ import messagesRouter from './routes/messages.routes'
 import tweetsRouter from './routes/tweets.routes'
 import usersRouter from './routes/users.routes'
 import databaseServices from './services/database.services'
-config()
 
 databaseServices.connect()
 const app = express()
-const port = 5000
+const port = 3000
 app.use(cors({ origin: 'http://localhost:3001', credentials: true }))
 app.use(bodyParser.json({ limit: '30mb' }))
 app.use(bodyParser.urlencoded({ extended: true, limit: '30mb' }))

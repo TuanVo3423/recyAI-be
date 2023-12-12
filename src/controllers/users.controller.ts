@@ -28,8 +28,8 @@ export const registerController = async (
   res: Response,
   next: NextFunction
 ) => {
-  const result = await userServices.register(req.body)
-  return res.json({ message: USER_MESSAGES.REGISTER_SUCCESS, result })
+  const { access_token, refresh_token, user } = await userServices.register(req.body)
+  return res.json({ message: USER_MESSAGES.REGISTER_SUCCESS, access_token, refresh_token, user })
 }
 
 export const loginController = async (
@@ -38,14 +38,13 @@ export const loginController = async (
   next: NextFunction
 ) => {
   const { verify, _id: user_id } = req.user as User
-  // const user_id = user?._id as ObjectId
-  const result = await userServices.login({
+  const tokens = await userServices.login({
     user_id: (user_id as ObjectId).toString(),
     verify
   })
-  const cookie = createCookie(result.access_token)
+  const cookie = createCookie(tokens.access_token)
   res.setHeader('Set-Cookie', [cookie])
-  return res.json({ message: USER_MESSAGES.LOGIN_SUCCESS, user: req.user, result })
+  return res.json({ message: USER_MESSAGES.LOGIN_SUCCESS, user: req.user, tokens })
 }
 
 export const logoutController = async (req: Request<ParamsDictionary, any, LogoutReqBody>, res: Response) => {
@@ -128,7 +127,7 @@ export const getMeController = async (req: Request, res: Response) => {
   const { user_id } = req.decoded_authorization as TokenPayload
   const user = await userServices.getMe(user_id)
   return res.json({
-    result: user,
+    user,
     message: USER_MESSAGES.GET_PROFILE_SUCCESS
   })
 }
@@ -137,7 +136,7 @@ export const getUserController = async (req: Request, res: Response) => {
   const { userId } = req.params
   const user = await userServices.getMe(userId)
   return res.json({
-    result: user,
+    user,
     message: USER_MESSAGES.GET_PROFILE_SUCCESS
   })
 }
@@ -197,8 +196,10 @@ export const followController = async (req: Request<ParamsDictionary, any, Follo
       message: USER_MESSAGES.ALREADY_FOLLOW_USER
     })
   }
-  const result = await userServices.followers(user_id, followed_user_id)
-  return res.json(result)
+  await userServices.followers(user_id, followed_user_id)
+  return res.json({
+    message: USER_MESSAGES.FOLLOW_PROFILE_SUCCESS
+  })
 }
 
 export const unfolowController = async (req: Request<any>, res: Response, next: NextFunction) => {

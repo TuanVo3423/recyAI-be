@@ -26,7 +26,8 @@ class TweetsServices {
     )
     return result
   }
-  async getMyTweets(user_id: string) {
+  async getMyTweets({ user_id, limit, page }: { user_id: string; limit: number; page: number }) {
+    const skip = limit * page - limit
     const tweets = await databaseServices.tweets
       .aggregate([
         { $match: { parent_id: null, user_id: new ObjectId(user_id) } },
@@ -79,7 +80,9 @@ class TweetsServices {
           $addFields: {
             like_count: { $size: '$likes' }
           }
-        }
+        },
+        { $skip: skip },
+        { $limit: limit }
       ])
       .toArray()
     return tweets
@@ -87,7 +90,6 @@ class TweetsServices {
 
   async getTweets({ user_id, limit, page }: { user_id: string; limit: number; page: number }) {
     const skip = limit * page - limit
-    console.log(skip, limit, page)
     const tweets = await databaseServices.tweets
       .aggregate([
         { $match: { parent_id: null } },
@@ -227,7 +229,7 @@ class TweetsServices {
       ])
       .toArray()
 
-    return tweet
+    return tweet[0]
   }
 
   async updateTweet(tweetId: ObjectId, payload: UpdateTweetReqBody) {
@@ -235,10 +237,11 @@ class TweetsServices {
     return result
   }
 
-  async getUserTweets(userId: string) {
+  async getUserTweets({ user_id, limit, page }: { user_id: string; limit: number; page: number }) {
+    const skip = limit * page - limit
     const tweets = await databaseServices.tweets
       .aggregate([
-        { $match: { parent_id: null, user_id: new ObjectId(userId) } },
+        { $match: { parent_id: null, user_id: new ObjectId(user_id) } },
         {
           $lookup: {
             from: 'instructions',
@@ -288,7 +291,9 @@ class TweetsServices {
           $addFields: {
             like_count: { $size: '$likes' }
           }
-        }
+        },
+        { $skip: skip },
+        { $limit: limit }
       ])
       .toArray()
     return tweets

@@ -1,13 +1,13 @@
-import User from '~/models/schemas/User.schema'
-import databaseServices from './database.services'
+import { ObjectId } from 'mongodb'
+import { TokenType, UserVerifyStatus } from '~/constants/enums'
+import { USER_MESSAGES } from '~/constants/message'
 import { RegisterReqBody, ResetPasswordReqBody, UpdateMeReqBody } from '~/models/requests/users.requests'
+import Follower from '~/models/schemas/Follower.schema'
+import RefreshToken from '~/models/schemas/RefreshToken.schema'
+import User from '~/models/schemas/User.schema'
 import { hashPassword } from '~/utils/crypto'
 import { signToken } from '~/utils/jwt'
-import { TokenType, UserVerifyStatus } from '~/constants/enums'
-import RefreshToken from '~/models/schemas/RefreshToken.schema'
-import { ObjectId } from 'mongodb'
-import { USER_MESSAGES } from '~/constants/message'
-import Follower from '~/models/schemas/Follower.schema'
+import databaseServices from './database.services'
 
 class UsersServices {
   private signAccessToken({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
@@ -234,7 +234,7 @@ class UsersServices {
         }
       ])
       .toArray()
-    return user
+    return user[0]
   }
 
   async checkIsUniqueUsername(username: string) {
@@ -282,10 +282,6 @@ class UsersServices {
         user_id: new ObjectId(user_id)
       })
     )
-
-    return {
-      message: USER_MESSAGES.FOLLOW_PROFILE_SUCCESS
-    }
   }
 
   async unFollow(user_id: string, followed_user_id: string) {

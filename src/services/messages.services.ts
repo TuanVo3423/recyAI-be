@@ -16,29 +16,65 @@ class MessagesServices {
     const message = await databaseServices.messages.findOne({ _id: new ObjectId(result.insertedId) })
     return message
   }
-  async getSendMessages({ user_id, user_recieved_id }: { user_id: string; user_recieved_id: string }) {
+  async getSendMessages({
+    user_id,
+    user_recieved_id,
+    limit,
+    page
+  }: {
+    user_id: string
+    user_recieved_id: string
+    limit: number
+    page: number
+  }) {
+    const skip = limit * page - limit
     const sendMessages = await databaseServices.messages
       .find({
         user_id: new ObjectId(user_id),
         user_recieved_id: new ObjectId(user_recieved_id)
       })
+      .skip(skip)
+      .limit(limit)
       .toArray()
     return sendMessages
   }
 
-  async getRecieveMessages({ user_id, user_recieved_id }: { user_id: string; user_recieved_id: string }) {
+  async getRecieveMessages({
+    user_id,
+    user_recieved_id,
+    limit,
+    page
+  }: {
+    user_id: string
+    user_recieved_id: string
+    limit: number
+    page: number
+  }) {
+    const skip = limit * page - limit
     const recieveMessages = await databaseServices.messages
       .find({
         user_id: new ObjectId(user_recieved_id),
         user_recieved_id: new ObjectId(user_id)
       })
+      .skip(skip)
+      .limit(limit)
       .toArray()
     return recieveMessages
   }
-  async getMessages({ user_id, user_recieved_id }: { user_id: string; user_recieved_id: string }) {
+  async getMessages({
+    user_id,
+    user_recieved_id,
+    limit,
+    page
+  }: {
+    user_id: string
+    user_recieved_id: string
+    limit: number
+    page: number
+  }) {
     const [send, recieve] = await Promise.all([
-      this.getSendMessages({ user_id, user_recieved_id }),
-      this.getRecieveMessages({ user_id, user_recieved_id })
+      this.getSendMessages({ user_id, user_recieved_id, limit, page }),
+      this.getRecieveMessages({ user_id, user_recieved_id, limit, page })
     ])
     const combinedArray = send.concat(recieve)
 

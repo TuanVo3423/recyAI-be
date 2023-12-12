@@ -12,8 +12,8 @@ export const createLikeController = async (
 ) => {
   const { user_id } = req.decoded_authorization as TokenPayload
   const { tweet_id } = req.body
-  const result = await likeServices.createLike({ user_id, tweet_id })
-  return res.json({ message: LIKES_MESSAGES.CREATE_LIKE_SUCCESS, result })
+  const like = await likeServices.createLike({ user_id, tweet_id })
+  return res.json({ message: LIKES_MESSAGES.CREATE_LIKE_SUCCESS, like })
 }
 
 export const deleteLikeController = async (
@@ -23,6 +23,6 @@ export const deleteLikeController = async (
 ) => {
   const { user_id } = req.decoded_authorization as TokenPayload
   const { tweet_id } = req.body
-  const result = await likeServices.deleteLike({ user_id, tweet_id })
-  return res.json({ message: LIKES_MESSAGES.DELETE_LIKE_SUCCESS, result })
+  const like = await likeServices.deleteLike({ user_id, tweet_id })
+  return res.json({ message: LIKES_MESSAGES.DELETE_LIKE_SUCCESS, like })
 }
