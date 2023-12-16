@@ -22,6 +22,7 @@ import User from '~/models/schemas/User.schema'
 import databaseServices from '~/services/database.services'
 import userServices from '~/services/users.services'
 import { createCookie } from '~/utils/cookie'
+import { sendMail } from '~/utils/mail'
 
 export const registerController = async (
   req: Request<ParamsDictionary, any, RegisterReqBody>,
@@ -71,6 +72,38 @@ export const verifyEmailController = async (req: Request<ParamsDictionary, any, 
   const result = await userServices.verifyEmail(user_id)
   return res.json({ message: USER_MESSAGES.EMAIL_VERIFY_SUCCESS, result })
 }
+
+export const MailVerifyTokenController = async (
+  req: Request<ParamsDictionary, any, VerifyEmailReqBody>,
+  res: Response
+) => {
+  const { user_id, verify } = req.decoded_authorization as TokenPayload
+  const user = await databaseServices.users.findOne({ _id: new ObjectId(user_id) })
+
+  // neu khong tim ra user
+  if (!user) {
+    return res.status(HTTP_STATUS.NOT_FOUND).json({
+      message: USER_MESSAGES.USER_NOT_FOUND
+    })
+  }
+  // da xac thuc roi
+  if (user.email_verify_token === '') {
+    return res.json({ message: USER_MESSAGES.EMAIL_ALREADY_VERIFIED_BEFORE })
+  }
+
+  const { email, email_verify_token, name } = user
+  const send = await sendMail({
+    sendTo: email,
+    subject: 'Verify Email',
+    name,
+    button_content: 'Verify your email',
+    instructions: 'To verify email please click here:',
+    link: `${process.env.BASE_API_FE_URL}/auth/verify/${email_verify_token}`
+  })
+
+  return res.status(200).json({ message: send })
+}
+
 export const resendVerifyEmailController = async (req: Request, res: Response) => {
   // find user
   const { user_id } = req.decoded_authorization as TokenPayload
@@ -103,7 +136,12 @@ export const forgotPasswordController = async (
     return res.json({ message: USER_MESSAGES.ALREADY_SEND_FORGOT_PASSWORD_EMAIL })
   }
   // create a new forgot password token
-  const result = await userServices.forgotPassword({ user_id: user._id.toString(), verify: user.verify })
+  const result = await userServices.forgotPassword({
+    user_id: user._id.toString(),
+    verify: user.verify,
+    email,
+    name: user.name
+  })
   return res.json(result)
 }
 

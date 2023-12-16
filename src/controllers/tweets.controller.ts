@@ -50,6 +50,18 @@ export const getTweetsController = async (
   return res.json({ tweets, message: TWEETS_MESSAGES.GET_TWEETS_SUCCESS, count: tweets.length })
 }
 
+export const getTweetsForGuestController = async (
+  req: Request<ParamsDictionary, any, any>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { limit, page } = req.query
+  const _limit = parseInt(limit as string) || 2
+  const _page = parseInt(page as string) || 1
+  const tweets = await tweetsServices.getTweets({ limit: _limit, page: _page })
+  return res.json({ tweets, message: TWEETS_MESSAGES.GET_TWEETS_SUCCESS, count: tweets.length })
+}
+
 export const getMyTweetsController = async (
   req: Request<ParamsDictionary, any, any>,
   res: Response,

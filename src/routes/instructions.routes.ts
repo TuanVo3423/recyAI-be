@@ -15,34 +15,14 @@ const instructionsRouter = Router()
 // instructionsRouter.post('/', accessTokenValidator, verifiedUserValidator, wrapRequestHandler(createNewController))
 instructionsRouter.post('/', accessTokenValidator, wrapRequestHandler(createNewController))
 
-instructionsRouter.get('/', accessTokenValidator, verifiedUserValidator, wrapRequestHandler(getInstructionsController))
+instructionsRouter.get('/', accessTokenValidator, wrapRequestHandler(getInstructionsController))
 
-instructionsRouter.get(
-  '/me',
-  accessTokenValidator,
-  verifiedUserValidator,
-  wrapRequestHandler(getMyInstructionsController)
-)
+instructionsRouter.get('/me', accessTokenValidator, wrapRequestHandler(getMyInstructionsController))
 
-instructionsRouter.get(
-  '/:instruction_id',
-  accessTokenValidator,
-  verifiedUserValidator,
-  wrapRequestHandler(getInstructionController)
-)
+instructionsRouter.get('/:instruction_id', accessTokenValidator, wrapRequestHandler(getInstructionController))
 
-instructionsRouter.patch(
-  '/:instruction_id',
-  accessTokenValidator,
-  verifiedUserValidator,
-  wrapRequestHandler(updateInstructionController)
-)
+instructionsRouter.patch('/:instruction_id', accessTokenValidator, wrapRequestHandler(updateInstructionController))
 
-instructionsRouter.delete(
-  '/:instruction_id',
-  accessTokenValidator,
-  verifiedUserValidator,
-  wrapRequestHandler(deleteInstructionController)
-)
+instructionsRouter.delete('/:instruction_id', accessTokenValidator, wrapRequestHandler(deleteInstructionController))
 
 export default instructionsRouter

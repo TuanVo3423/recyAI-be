@@ -8,6 +8,7 @@ import User from '~/models/schemas/User.schema'
 import { hashPassword } from '~/utils/crypto'
 import { signToken } from '~/utils/jwt'
 import databaseServices from './database.services'
+import { sendMail } from '~/utils/mail'
 
 class UsersServices {
   private signAccessToken({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
@@ -154,10 +155,29 @@ class UsersServices {
       message: USER_MESSAGES.RESEND_EMAIL_VERIFY_SUCCESS
     }
   }
-  async forgotPassword({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
+  async forgotPassword({
+    user_id,
+    verify,
+    email,
+    name
+  }: {
+    user_id: string
+    verify: UserVerifyStatus
+    email: string
+    name: string
+  }) {
     const forgot_password_token = await this.signForgotPasswordToken({ user_id, verify })
     // send forgot password mail here to client
+    const send = await sendMail({
+      sendTo: email,
+      subject: 'Verify Forgot Password',
+      name,
+      button_content: 'Reset Password',
+      instructions: 'To reset password please click here:',
+      link: `${process.env.BASE_API_FE_URL}/auth/new-password/${forgot_password_token}`
+    })
     console.log('new forgot_password_token: ', forgot_password_token)
+    console.log('send: ', send)
     await databaseServices.users.updateOne({ _id: new ObjectId(user_id) }, [
       {
         $set: {

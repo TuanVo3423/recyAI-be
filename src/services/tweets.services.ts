@@ -88,7 +88,7 @@ class TweetsServices {
     return tweets
   }
 
-  async getTweets({ user_id, limit, page }: { user_id: string; limit: number; page: number }) {
+  async getTweets({ user_id, limit, page }: { user_id?: string; limit: number; page: number }) {
     const skip = limit * page - limit
     const tweets = await databaseServices.tweets
       .aggregate([

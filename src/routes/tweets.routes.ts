@@ -4,12 +4,13 @@ import {
   getMyTweetsController,
   getTweetController,
   getTweetsController,
+  getTweetsForGuestController,
   getUserTweetsController,
   updateTweetController
 } from '~/controllers/tweets.controller'
 import { uploadController } from '~/controllers/upload.controller'
 import { tweetExistValidator } from '~/middlewares/tweets.middlewares'
-import { accessTokenValidator } from '~/middlewares/users.middlewares'
+import { accessTokenValidator, verifiedUserValidator } from '~/middlewares/users.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
 const tweetsRouter = Router()
@@ -20,13 +21,15 @@ const tweetsRouter = Router()
 tweetsRouter.post(
   '/',
   accessTokenValidator,
+  verifiedUserValidator,
   wrapRequestHandler(uploadController),
   wrapRequestHandler(createNewController)
 )
-tweetsRouter.get('/me', accessTokenValidator, wrapRequestHandler(getMyTweetsController))
 tweetsRouter.get('/user/:userId', accessTokenValidator, wrapRequestHandler(getUserTweetsController))
-tweetsRouter.get('/:tweetId', accessTokenValidator, wrapRequestHandler(getTweetController))
+tweetsRouter.get('/me', accessTokenValidator, wrapRequestHandler(getMyTweetsController))
+tweetsRouter.get('/all', wrapRequestHandler(getTweetsForGuestController))
 tweetsRouter.get('/', accessTokenValidator, wrapRequestHandler(getTweetsController))
+tweetsRouter.get('/:tweetId', wrapRequestHandler(getTweetController))
 tweetsRouter.patch('/:tweetId', accessTokenValidator, tweetExistValidator, wrapRequestHandler(updateTweetController))
 
 export default tweetsRouter
