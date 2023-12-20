@@ -97,3 +97,23 @@ export const updateTweetController = async (
   const tweet = await tweetsServices.updateTweet(new ObjectId(tweetId), req.body)
   return res.json({ tweet, message: TWEETS_MESSAGES.UPDATE_TWEET_SUCCESS })
 }
+
+export const deleteTweetController = async (
+  req: Request<ParamsDictionary, any, any>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { tweetId } = req.params
+  const tweet = await tweetsServices.deleteTweet(tweetId)
+  return res.json({ tweet, message: TWEETS_MESSAGES.DELETE_TWEET_SUCCESS })
+}
+
+export const deleteTweetByInstructionController = async (
+  req: Request<ParamsDictionary, any, any>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { instructionId } = req.params
+  const tweet = await tweetsServices.deleteTweetByInstruction(instructionId)
+  return res.json({ tweet, message: TWEETS_MESSAGES.DELETE_TWEET_SUCCESS })
+}

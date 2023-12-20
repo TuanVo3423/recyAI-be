@@ -246,6 +246,14 @@ class UsersServices {
           }
         },
         {
+          $lookup: {
+            from: 'tweets',
+            localField: '_id',
+            foreignField: 'user_id',
+            as: 'tweets'
+          }
+        },
+        {
           $project: {
             password: 0,
             email_verify_token: 0,

@@ -11,7 +11,8 @@ export const uploadController = async (
 ) => {
   try {
     const { medias } = req.body
-    if (medias.length > 0) {
+    console.log(medias)
+    if (medias) {
       const folder = '/recycling-website/'
       const uploadedImages = []
       // Lặp qua từng hình ảnh và thực hiện việc tải lên

@@ -237,6 +237,16 @@ class TweetsServices {
     return result
   }
 
+  async deleteTweet(tweetId: string) {
+    const result = await databaseServices.tweets.deleteOne({ _id: new ObjectId(tweetId) })
+    return result
+  }
+
+  async deleteTweetByInstruction(instructionId: string) {
+    const result = await databaseServices.tweets.deleteOne({ instruction_id: new ObjectId(instructionId) })
+    return result
+  }
+
   async getUserTweets({ user_id, limit, page }: { user_id: string; limit: number; page: number }) {
     const skip = limit * page - limit
     const tweets = await databaseServices.tweets

@@ -33,6 +33,7 @@ class MessagesServices {
         user_id: new ObjectId(user_id),
         user_recieved_id: new ObjectId(user_recieved_id)
       })
+      .sort({ created_at: -1 })
       .skip(skip)
       .limit(limit)
       .toArray()
@@ -56,6 +57,7 @@ class MessagesServices {
         user_id: new ObjectId(user_recieved_id),
         user_recieved_id: new ObjectId(user_id)
       })
+      .sort({ created_at: -1 })
       .skip(skip)
       .limit(limit)
       .toArray()

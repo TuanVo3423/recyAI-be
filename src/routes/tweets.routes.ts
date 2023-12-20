@@ -1,6 +1,8 @@
 import { Router } from 'express'
 import {
   createNewController,
+  deleteTweetByInstructionController,
+  deleteTweetController,
   getMyTweetsController,
   getTweetController,
   getTweetsController,
@@ -31,5 +33,12 @@ tweetsRouter.get('/all', wrapRequestHandler(getTweetsForGuestController))
 tweetsRouter.get('/', accessTokenValidator, wrapRequestHandler(getTweetsController))
 tweetsRouter.get('/:tweetId', wrapRequestHandler(getTweetController))
 tweetsRouter.patch('/:tweetId', accessTokenValidator, tweetExistValidator, wrapRequestHandler(updateTweetController))
+tweetsRouter.delete(
+  '/instruction/:instructionId',
+  accessTokenValidator,
+  wrapRequestHandler(deleteTweetByInstructionController)
+)
+tweetsRouter.delete('/:tweetId', accessTokenValidator, tweetExistValidator, wrapRequestHandler(deleteTweetController))
+// delete by instruction id
 
 export default tweetsRouter

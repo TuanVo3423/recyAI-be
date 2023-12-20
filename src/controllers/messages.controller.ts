@@ -23,7 +23,7 @@ export const getMessagesController = async (
 ) => {
   const { user_id } = req.decoded_authorization as TokenPayload
   const { limit, page, user_recieved_id } = req.query
-  const _limit = parseInt(limit as string) || 10
+  const _limit = parseInt(limit as string) || 20
   const _page = parseInt(page as string) || 1
   const result = await messagesServices.getMessages({
     user_id,
