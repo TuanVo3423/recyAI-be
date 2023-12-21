@@ -121,7 +121,7 @@ class UsersServices {
 
   async verifyEmail(user_id: string) {
     const [token] = await Promise.all([
-      this.signAccessTokenAndRefreshToken({ user_id, verify: UserVerifyStatus.Unverified }),
+      this.signAccessTokenAndRefreshToken({ user_id, verify: UserVerifyStatus.Verified }),
       databaseServices.users.updateOne({ _id: new ObjectId(user_id) }, [
         {
           $set: {
@@ -140,7 +140,7 @@ class UsersServices {
   }
 
   async resendVerifyEmail(user_id: string) {
-    const email_verify_token = await this.signEmailVerifyToken({ user_id, verify: UserVerifyStatus.Unverified })
+    const email_verify_token = await this.signEmailVerifyToken({ user_id, verify: UserVerifyStatus.Verified })
     // resend mail here to client
     console.log('new email_verify_token: ', email_verify_token)
     await databaseServices.users.updateOne({ _id: new ObjectId(user_id) }, [

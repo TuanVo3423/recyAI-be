@@ -70,6 +70,8 @@ export const verifyEmailController = async (req: Request<ParamsDictionary, any, 
   }
 
   const result = await userServices.verifyEmail(user_id)
+  const cookie = createCookie(result.access_token)
+  res.setHeader('Set-Cookie', [cookie])
   return res.json({ message: USER_MESSAGES.EMAIL_VERIFY_SUCCESS, result })
 }
 
