@@ -21,18 +21,17 @@ import {
 import { FilterValidator } from '~/middlewares/common.middlewares'
 import {
   accessTokenValidator,
+  changePasswordValidator,
   emailVerifyTokenValidator,
+  followValidator,
   forgotPasswordValidator,
-  verifyForgotPasswordTokenValidator,
   loginValidator,
   refreshTokenValidator,
   registerValidator,
   resetPasswordValidator,
-  verifiedUserValidator,
+  unfolowValidator,
   updateMeValidator,
-  followValidator,
-  changePasswordValidator,
-  unfolowValidator
+  verifyForgotPasswordTokenValidator
 } from '~/middlewares/users.middlewares'
 import { UpdateMeReqBody } from '~/models/requests/users.requests'
 import { wrapRequestHandler } from '~/utils/handlers'
@@ -62,7 +61,6 @@ usersRouter.get('/:userId', accessTokenValidator, wrapRequestHandler(getUserCont
 usersRouter.patch(
   '/me',
   accessTokenValidator,
-  verifiedUserValidator,
   wrapRequestHandler(uploadController),
   updateMeValidator,
   FilterValidator<UpdateMeReqBody>([
@@ -78,26 +76,18 @@ usersRouter.patch(
   wrapRequestHandler(updateMeController)
 )
 
-usersRouter.post(
-  '/follow',
-  followValidator,
-  accessTokenValidator,
-  verifiedUserValidator,
-  wrapRequestHandler(followController)
-)
+usersRouter.post('/follow', followValidator, accessTokenValidator, wrapRequestHandler(followController))
 
 usersRouter.delete(
   '/follow/:followed_user_id',
   unfolowValidator,
   accessTokenValidator,
-  verifiedUserValidator,
   wrapRequestHandler(unfolowController)
 )
 
 usersRouter.put(
   '/password',
   accessTokenValidator,
-  verifiedUserValidator,
   changePasswordValidator,
   wrapRequestHandler(changePasswordController)
 )
